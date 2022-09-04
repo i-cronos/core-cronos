@@ -23,13 +23,15 @@
             <groupId>pe.com.cronos</groupId>
             <artifactId>core-exception</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
+        <dependency>
+            <groupId>pe.com.cronos</groupId>
+            <artifactId>core-crypto</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
             <version>4.0.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>

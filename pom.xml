@@ -38,6 +38,11 @@
                 <artifactId>core-exception</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>pe.com.cronos</groupId>
+                <artifactId>core-crypto</artifactId>
+                <version>${revision}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

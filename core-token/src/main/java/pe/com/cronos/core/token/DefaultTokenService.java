@@ -3,9 +3,8 @@ package pe.com.cronos.core.token;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import pe.com.cronos.core.crypto.Digest;
 import pe.com.cronos.core.exceptions.CronosException;
 import pe.com.cronos.core.exceptions.domain.InfoFactory;
 import pe.com.cronos.core.exceptions.domain.Message;
@@ -34,7 +33,9 @@ public class DefaultTokenService implements TokenService {
                     .withExpiresAt(now.plusSeconds(tokenCreationRequest.ttl()))
                     .sign(algorithm);
 
-            return new TokenCreationResponse(tokenCreationRequest.tokenType(), token);
+            String summary = Digest.digest(token);
+
+            return new TokenCreationResponse(tokenCreationRequest.tokenType(), token, summary);
 
         } catch (Exception ex) {
             throw new CronosException(InfoFactory.get(Message.CORE_TOKEN_CREATION, ex));
