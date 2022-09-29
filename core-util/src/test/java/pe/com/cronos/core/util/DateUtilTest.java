@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 class DateUtilTest {
 
@@ -12,7 +14,24 @@ class DateUtilTest {
         LocalDate request = LocalDate.now();
 
         String response = DateUtil.dateToString(request, DatePattern.DD_MM_YYYY);
-        System.out.println(response);
+
+        Assertions.assertNotNull(response);
+    }
+
+    @Test
+    void givenDateTimeAndPattern_whenDateToString_thenValidateResult() {
+        LocalDateTime request = LocalDateTime.now();
+
+        String response = DateUtil.dateTimeToString(request, DatePattern.DD_MM_YYYY_H_M_S);
+
+        Assertions.assertNotNull(response);
+    }
+
+    @Test
+    void givenZonedDateTimeAndPattern_whenDateToString_thenValidateResult() {
+        ZonedDateTime request = ZonedDateTime.now();
+        String response = DateUtil.zonedDateTimeToString(request, DatePattern.DD_MM_YYYY_H_M_S_Z);
+
         Assertions.assertNotNull(response);
     }
 }
