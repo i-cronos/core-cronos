@@ -1,4 +1,12 @@
 package pe.com.cronos.core.token.domain;
 
-public record TokenValidationRequest(String issuer, String password, String token) {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public class TokenValidationRequest {
+    private String issuer;
+    private String password;
+    private String token;
 }

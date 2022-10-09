@@ -20,10 +20,10 @@
     <packaging>pom</packaging>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <revision>0.0.1-SNAPSHOT</revision>
+        <revision>0.0.2-SNAPSHOT</revision>
     </properties>
 
     <dependencyManagement>
@@ -48,6 +48,12 @@
                 <groupId>pe.com.cronos</groupId>
                 <artifactId>core-util</artifactId>
                 <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>pe.com.cronos</groupId>
+                <artifactId>core-dependencies</artifactId>
+                <version>${revision}</version>
+                <type>pom</type>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -102,5 +108,37 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <distributionManagement>
+        <repository>
+            <id>cronos-artifacts</id>
+            <url>https://pkgs.dev.azure.com/cronos3141516/cronos-overt-devops/_packaging/cronos-artifacts/maven/v1</url>
+        </repository>
+    </distributionManagement>
 
 </project>

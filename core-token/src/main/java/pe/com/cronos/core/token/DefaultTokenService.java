@@ -21,21 +21,21 @@ public class DefaultTokenService implements TokenService {
     @Override
     public TokenCreationResponse create(TokenCreationRequest tokenCreationRequest) {
         try {
-            Algorithm algorithm = Algorithm.HMAC512(tokenCreationRequest.password());
+            Algorithm algorithm = Algorithm.HMAC512(tokenCreationRequest.getPassword());
             Instant now = Instant.now();
             String token = JWT.create()
-                    .withIssuer(tokenCreationRequest.issuer())
-                    .withSubject(tokenCreationRequest.subject())
-                    .withClaim(TOKEN_TYPE, tokenCreationRequest.tokenType().name())
-                    .withClaim(TOKEN_ROLE, tokenCreationRequest.role())
-                    .withClaim(TOKEN_DATA, tokenCreationRequest.data())
+                    .withIssuer(tokenCreationRequest.getIssuer())
+                    .withSubject(tokenCreationRequest.getSubject())
+                    .withClaim(TOKEN_TYPE, tokenCreationRequest.getTokenType().name())
+                    .withClaim(TOKEN_ROLE, tokenCreationRequest.getRole())
+                    .withClaim(TOKEN_DATA, tokenCreationRequest.getData())
                     .withIssuedAt(now)
-                    .withExpiresAt(now.plusSeconds(tokenCreationRequest.ttl()))
+                    .withExpiresAt(now.plusSeconds(tokenCreationRequest.getTtl()))
                     .sign(algorithm);
 
             String summary = Digest.digest(token);
 
-            return new TokenCreationResponse(tokenCreationRequest.tokenType(), token, summary);
+            return new TokenCreationResponse(tokenCreationRequest.getTokenType(), token, summary);
 
         } catch (Exception ex) {
             throw new CronosException(InfoFactory.get(Message.CORE_TOKEN_CREATION, ex));
@@ -45,13 +45,13 @@ public class DefaultTokenService implements TokenService {
     @Override
     public TokenValidationResponse validate(TokenValidationRequest tokenValidationRequest) {
         try {
-            Algorithm algorithm = Algorithm.HMAC512(tokenValidationRequest.password());
+            Algorithm algorithm = Algorithm.HMAC512(tokenValidationRequest.getPassword());
 
             JWTVerifier verifier = JWT.require(algorithm)
-                    .withIssuer(tokenValidationRequest.issuer())
+                    .withIssuer(tokenValidationRequest.getIssuer())
                     .build();
 
-            DecodedJWT jwt = verifier.verify(tokenValidationRequest.token());
+            DecodedJWT jwt = verifier.verify(tokenValidationRequest.getToken());
 
             return new TokenValidationResponse(
                     TokenType.valueOf(jwt.getClaim(TOKEN_TYPE).asString()),

@@ -56,7 +56,7 @@ class DefaultTokenServiceTest {
 
         TokenCreationResponse tokenResponse = tokenService.create(tokenRequest);
 
-        TokenValidationRequest tokenValidationRequest = new TokenValidationRequest(issuer, tokenPassword, tokenResponse.token());
+        TokenValidationRequest tokenValidationRequest = new TokenValidationRequest(issuer, tokenPassword, tokenResponse.getToken());
 
         TokenValidationResponse tokenValidationResponse = tokenService.validate(tokenValidationRequest);
 
@@ -76,7 +76,7 @@ class DefaultTokenServiceTest {
 
         TokenCreationResponse tokenResponse = tokenService.create(tokenRequest);
 
-        TokenValidationRequest tokenValidationRequest = new TokenValidationRequest(issuer, tokenPassword, tokenResponse.token());
+        TokenValidationRequest tokenValidationRequest = new TokenValidationRequest(issuer, tokenPassword, tokenResponse.getToken());
 
         Assertions.assertThrows(CronosException.class, () -> tokenService.validate(tokenValidationRequest));
 

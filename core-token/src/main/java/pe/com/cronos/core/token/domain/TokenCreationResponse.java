@@ -1,5 +1,12 @@
 package pe.com.cronos.core.token.domain;
 
-public record TokenCreationResponse(TokenType tokenType, String token, String summary) {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
+public class TokenCreationResponse {
+    private TokenType tokenType;
+    private String token;
+    private String summary;
 }
