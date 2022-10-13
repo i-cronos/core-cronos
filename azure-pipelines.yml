@@ -9,5 +9,5 @@ stages:
     jobs:
       - job: jobCompile
         steps:
-          - bash: "Compile core"
+          - bash: echo "Compile core"
 
