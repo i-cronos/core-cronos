@@ -5,13 +5,36 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-  - stage: stageCompile
+  - stage: Test
+    displayName: Run Test
     jobs:
-      - job: jobCompile
+      - job: Unit Test
         steps:
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
-              goals: 'deploy' # Optional
+              goals: 'test'
               publishJUnitResults: true
               jdkVersionOption: '1.8'
+              testResultsFiles: '**/surefire-reports/TEST-*.xml'
+              mavenAuthenticateFeed: false
+              mavenVersionOption: 'Default'
+              effectivePomSkip: false
+              sonarQubeRunAnalysis: false
+
+  - stage: Deploy
+    displayName: Run Deploy
+    jobs:
+      - job: DeployArtifact
+        steps:
+          - task: Maven@3
+            inputs:
+              mavenPomFile: 'pom.xml'
+              goals: 'deploy'
+              publishJUnitResults: true
+              jdkVersionOption: '1.8'
+              testResultsFiles: '**/surefire-reports/TEST-*.xml'
+              mavenAuthenticateFeed: true
+              mavenVersionOption: 'Default'
+              effectivePomSkip: false
+              sonarQubeRunAnalysis: false
