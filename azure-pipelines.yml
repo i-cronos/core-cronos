@@ -9,5 +9,8 @@ stages:
     jobs:
       - job: jobCompile
         steps:
-          - bash: echo "Compile core"
-
+          - task: Maven@3
+            inputs:
+              mavenPomFile: 'pom.xml'
+              goals: 'package' # Optional
+              publishJUnitResults: true
