@@ -11,16 +11,16 @@ stages:
       - job: UnitTest
         steps:
           - task: Maven@3
+            displayName: Maven test
             inputs:
               mavenPomFile: 'pom.xml'
-              goals: 'test'
-              publishJUnitResults: true
+              mavenOptions: '-Xmx3072m'
+              javaHomeOption: 'JDKVersion'
               jdkVersionOption: '1.8'
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: true
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
-              mavenAuthenticateFeed: false
-              mavenVersionOption: 'Default'
-              effectivePomSkip: false
-              sonarQubeRunAnalysis: false
+              goals: 'test'
 
   - stage: StageDeploy
     displayName: Run Deploy
@@ -28,14 +28,19 @@ stages:
     jobs:
       - job: DeployArtifact
         steps:
+          - task: MavenAuthenticate@0
+            displayName: Maven authentication to Feed
+            inputs:
+              artifactsFeeds: 'cronos-artifacts-repository'
+              mavenServiceConnections: 'CronosArtifactoryServiceConnectionName'
           - task: Maven@3
+            displayName: Maven deploy
             inputs:
               mavenPomFile: 'pom.xml'
-              goals: 'deploy'
-              publishJUnitResults: true
+              mavenOptions: '-Xmx3072m'
+              javaHomeOption: 'JDKVersion'
               jdkVersionOption: '1.8'
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: true
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
-              mavenAuthenticateFeed: true
-              mavenVersionOption: 'Default'
-              effectivePomSkip: false
-              sonarQubeRunAnalysis: false
+              goals: 'deploy'
