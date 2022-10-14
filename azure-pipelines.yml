@@ -8,7 +8,7 @@ stages:
   - stage: Test
     displayName: Run Test
     jobs:
-      - job: Unit Test
+      - job: UnitTest
         steps:
           - task: Maven@3
             inputs:
