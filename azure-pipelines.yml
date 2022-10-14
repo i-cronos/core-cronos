@@ -1,11 +1,11 @@
 trigger:
-- master
+  - master
 
 pool:
   vmImage: ubuntu-latest
 
 stages:
-  - stage: Test
+  - stage: StageTest
     displayName: Run Test
     jobs:
       - job: UnitTest
@@ -22,8 +22,9 @@ stages:
               effectivePomSkip: false
               sonarQubeRunAnalysis: false
 
-  - stage: Deploy
+  - stage: StageDeploy
     displayName: Run Deploy
+    dependsOn: StageTest
     jobs:
       - job: DeployArtifact
         steps:
