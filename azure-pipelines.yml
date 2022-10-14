@@ -12,5 +12,6 @@ stages:
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
-              goals: 'package' # Optional
+              goals: 'deploy' # Optional
               publishJUnitResults: true
+              javaHomeOption: '1.8'
