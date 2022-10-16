@@ -32,7 +32,7 @@ stages:
             displayName: Maven authentication to Feed
             inputs:
               artifactsFeeds: 'cronos-artifacts-repository'
-              mavenServiceConnections: 'CronosArtifactoryServiceConnection'
+              mavenServiceConnections: 'cronos-artifactory-sc'
           - task: Maven@3
             displayName: Maven deploy
             inputs:
