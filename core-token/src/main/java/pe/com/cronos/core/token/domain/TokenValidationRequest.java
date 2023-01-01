@@ -1,12 +1,12 @@
 package pe.com.cronos.core.token.domain;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class TokenValidationRequest {
     private String issuer;
-    private String password;
+    private String key;
     private String token;
 }

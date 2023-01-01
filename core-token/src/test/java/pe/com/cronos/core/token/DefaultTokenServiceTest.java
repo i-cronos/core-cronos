@@ -24,7 +24,17 @@ class DefaultTokenServiceTest {
         data.put("data1", "Test 1");
         data.put("data2", "Test 2");
         data.put("data3", "Test 3");
-        TokenCreationRequest tokenRequest = new TokenCreationRequest(100, TokenType.USER, "AUTH", "CRONOS", "test pass", "testUser", new String[]{"USER"}, data);
+
+        TokenCreationRequest tokenRequest = TokenCreationRequest.builder()
+                .ttl(100)
+                .tokenType(TokenType.USER)
+                .subject("AUTH")
+                .issuer("CRONOS")
+                .key("test key")
+                .id("testUser")
+                .authorities(new String[]{"USER"})
+                .data(data)
+                .build();
 
         TokenCreationResponse tokenResponse = tokenService.create(tokenRequest);
 
@@ -37,7 +47,17 @@ class DefaultTokenServiceTest {
         data.put("data1", "Test 1");
         data.put("data2", "Test 2");
         data.put("data3", "Test 3");
-        TokenCreationRequest tokenRequest = new TokenCreationRequest(null, TokenType.USER, "AUTH", "CRONOS", "test pass", "testUser", new String[]{"USER"}, data);
+
+        TokenCreationRequest tokenRequest = TokenCreationRequest.builder()
+                .ttl(null)
+                .tokenType(TokenType.USER)
+                .subject("AUTH")
+                .issuer("CRONOS")
+                .key("test key")
+                .id("testUser")
+                .authorities(new String[]{"USER"})
+                .data(data)
+                .build();
 
         Assertions.assertThrows(CronosException.class, () -> tokenService.create(tokenRequest));
     }
@@ -45,18 +65,32 @@ class DefaultTokenServiceTest {
 
     @Test
     void givenTokenValidationRequest_whenValidate_thenValidateResponse() {
-        String key = "Test 1";
+        String key = "Key 1";
         String issuer = "CRONOS";
 
         Map<String, String> data = new HashMap<>();
         data.put("data1", "Test 1");
         data.put("data2", "Test 2");
         data.put("data3", "Test 3");
-        TokenCreationRequest tokenRequest = new TokenCreationRequest(100, TokenType.USER, "AUTH", issuer, key, "testUser", new String[]{"USER"}, data);
+
+        TokenCreationRequest tokenRequest = TokenCreationRequest.builder()
+                .ttl(100)
+                .tokenType(TokenType.USER)
+                .subject("AUTH")
+                .issuer("CRONOS")
+                .key("Key 1")
+                .id("testUser")
+                .authorities(new String[]{"USER"})
+                .data(data)
+                .build();
 
         TokenCreationResponse tokenResponse = tokenService.create(tokenRequest);
 
-        TokenValidationRequest tokenValidationRequest = new TokenValidationRequest(issuer, key, tokenResponse.getToken());
+        TokenValidationRequest tokenValidationRequest = TokenValidationRequest.builder()
+                .issuer(issuer)
+                .key(key)
+                .token(tokenResponse.getToken())
+                .build();
 
         TokenValidationResponse tokenValidationResponse = tokenService.validate(tokenValidationRequest);
 
@@ -65,18 +99,32 @@ class DefaultTokenServiceTest {
 
     @Test
     void givenTokenValidationRequest_whenValidate_thenThrowsException() {
-        String key = "Test 1";
+        String key = "Key 1";
         String issuer = "CRONOS";
 
         Map<String, String> data = new HashMap<>();
         data.put("data1", "Test 1");
         data.put("data2", "Test 2");
         data.put("data3", "Test 3");
-        TokenCreationRequest tokenRequest = new TokenCreationRequest(-10, TokenType.USER, "AUTH", issuer, key, "testUser", new String[]{"USER"}, data);
+
+        TokenCreationRequest tokenRequest = TokenCreationRequest.builder()
+                .ttl(-100)
+                .tokenType(TokenType.USER)
+                .subject("AUTH")
+                .issuer("CRONOS")
+                .key("Key 2")
+                .id("testUser")
+                .authorities(new String[]{"USER"})
+                .data(data)
+                .build();
 
         TokenCreationResponse tokenResponse = tokenService.create(tokenRequest);
 
-        TokenValidationRequest tokenValidationRequest = new TokenValidationRequest(issuer, key, tokenResponse.getToken());
+        TokenValidationRequest tokenValidationRequest = TokenValidationRequest.builder()
+                .issuer(issuer)
+                .key(key)
+                .token(tokenResponse.getToken())
+                .build();
 
         Assertions.assertThrows(CronosException.class, () -> tokenService.validate(tokenValidationRequest));
 

@@ -1,13 +1,13 @@
 package pe.com.cronos.core.token.domain;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Map;
 
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class TokenCreationRequest {
     private Integer ttl;
     private TokenType tokenType;

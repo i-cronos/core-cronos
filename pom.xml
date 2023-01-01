@@ -51,6 +51,11 @@
             </dependency>
             <dependency>
                 <groupId>pe.com.cronos</groupId>
+                <artifactId>core-token</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>pe.com.cronos</groupId>
                 <artifactId>core-dependencies</artifactId>
                 <version>${revision}</version>
                 <type>pom</type>

@@ -37,7 +37,11 @@ public class DefaultTokenService implements TokenService {
 
             String summary = Digest.digest(token);
 
-            return new TokenCreationResponse(tokenCreationRequest.getTokenType(), token, summary);
+            return TokenCreationResponse.builder()
+                    .tokenType(tokenCreationRequest.getTokenType())
+                    .token(token)
+                    .summary(summary)
+                    .build();
 
         } catch (Exception ex) {
             throw new CronosException(InfoFactory.get(Message.CORE_TOKEN_CREATION, ex));
@@ -47,7 +51,7 @@ public class DefaultTokenService implements TokenService {
     @Override
     public TokenValidationResponse validate(TokenValidationRequest tokenValidationRequest) {
         try {
-            Algorithm algorithm = Algorithm.HMAC512(tokenValidationRequest.getPassword());
+            Algorithm algorithm = Algorithm.HMAC512(tokenValidationRequest.getKey());
 
             JWTVerifier verifier = JWT.require(algorithm)
                     .withIssuer(tokenValidationRequest.getIssuer())
@@ -55,11 +59,13 @@ public class DefaultTokenService implements TokenService {
 
             DecodedJWT jwt = verifier.verify(tokenValidationRequest.getToken());
 
-            return new TokenValidationResponse(
-                    TokenType.valueOf(jwt.getClaim(TOKEN_LABEL_TYPE).asString()),
-                    jwt.getClaim(TOKEN_LABEL_ID).asString(),
-                    jwt.getClaim(TOKEN_LABEL_AUTHORITIES).asArray(String.class),
-                    jwt.getClaim(TOKEN_LABEL_DATA).asMap());
+            return TokenValidationResponse.builder()
+                    .tokenType(TokenType.valueOf(jwt.getClaim(TOKEN_LABEL_TYPE).asString()))
+                    .id(jwt.getClaim(TOKEN_LABEL_ID).asString())
+                    .authorities(jwt.getClaim(TOKEN_LABEL_AUTHORITIES).asArray(String.class))
+                    .data(jwt.getClaim(TOKEN_LABEL_DATA).asMap())
+                    .build();
+
 
         } catch (Exception ex) {
             throw new CronosException(InfoFactory.get(Message.CORE_TOKEN_VALIDATION, ex));
