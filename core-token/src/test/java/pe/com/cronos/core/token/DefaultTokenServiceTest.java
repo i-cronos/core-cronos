@@ -24,7 +24,7 @@ class DefaultTokenServiceTest {
         data.put("data1", "Test 1");
         data.put("data2", "Test 2");
         data.put("data3", "Test 3");
-        TokenCreationRequest tokenRequest = new TokenCreationRequest(100, TokenType.LOCAL, "AUTH", "CRONOS", "test pass", "USER", data);
+        TokenCreationRequest tokenRequest = new TokenCreationRequest(100, TokenType.USER, "AUTH", "CRONOS", "test pass", "testUser", new String[]{"USER"}, data);
 
         TokenCreationResponse tokenResponse = tokenService.create(tokenRequest);
 
@@ -37,7 +37,7 @@ class DefaultTokenServiceTest {
         data.put("data1", "Test 1");
         data.put("data2", "Test 2");
         data.put("data3", "Test 3");
-        TokenCreationRequest tokenRequest = new TokenCreationRequest(null, TokenType.LOCAL, "AUTH", "CRONOS", "test pass", "USER", data);
+        TokenCreationRequest tokenRequest = new TokenCreationRequest(null, TokenType.USER, "AUTH", "CRONOS", "test pass", "testUser", new String[]{"USER"}, data);
 
         Assertions.assertThrows(CronosException.class, () -> tokenService.create(tokenRequest));
     }
@@ -45,18 +45,18 @@ class DefaultTokenServiceTest {
 
     @Test
     void givenTokenValidationRequest_whenValidate_thenValidateResponse() {
-        String tokenPassword = "Test 1";
+        String key = "Test 1";
         String issuer = "CRONOS";
 
         Map<String, String> data = new HashMap<>();
         data.put("data1", "Test 1");
         data.put("data2", "Test 2");
         data.put("data3", "Test 3");
-        TokenCreationRequest tokenRequest = new TokenCreationRequest(100, TokenType.LOCAL, "AUTH", issuer, tokenPassword, "USER", data);
+        TokenCreationRequest tokenRequest = new TokenCreationRequest(100, TokenType.USER, "AUTH", issuer, key, "testUser", new String[]{"USER"}, data);
 
         TokenCreationResponse tokenResponse = tokenService.create(tokenRequest);
 
-        TokenValidationRequest tokenValidationRequest = new TokenValidationRequest(issuer, tokenPassword, tokenResponse.getToken());
+        TokenValidationRequest tokenValidationRequest = new TokenValidationRequest(issuer, key, tokenResponse.getToken());
 
         TokenValidationResponse tokenValidationResponse = tokenService.validate(tokenValidationRequest);
 
@@ -65,18 +65,18 @@ class DefaultTokenServiceTest {
 
     @Test
     void givenTokenValidationRequest_whenValidate_thenThrowsException() {
-        String tokenPassword = "Test 1";
+        String key = "Test 1";
         String issuer = "CRONOS";
 
         Map<String, String> data = new HashMap<>();
         data.put("data1", "Test 1");
         data.put("data2", "Test 2");
         data.put("data3", "Test 3");
-        TokenCreationRequest tokenRequest = new TokenCreationRequest(-10, TokenType.LOCAL, "AUTH", issuer, tokenPassword, "USER", data);
+        TokenCreationRequest tokenRequest = new TokenCreationRequest(-10, TokenType.USER, "AUTH", issuer, key, "testUser", new String[]{"USER"}, data);
 
         TokenCreationResponse tokenResponse = tokenService.create(tokenRequest);
 
-        TokenValidationRequest tokenValidationRequest = new TokenValidationRequest(issuer, tokenPassword, tokenResponse.getToken());
+        TokenValidationRequest tokenValidationRequest = new TokenValidationRequest(issuer, key, tokenResponse.getToken());
 
         Assertions.assertThrows(CronosException.class, () -> tokenService.validate(tokenValidationRequest));
 

@@ -9,6 +9,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class TokenValidationResponse {
     private TokenType tokenType;
-    private String role;
+    private String id;
+    private String[] authorities;
     private Map<String, Object> data;
 }

@@ -13,7 +13,8 @@ public class TokenCreationRequest {
     private TokenType tokenType;
     private String subject;
     private String issuer;
-    private String password;
-    private String role;
+    private String key;
+    private String id;
+    private String[] authorities;
     private Map<String, String> data;
 }
