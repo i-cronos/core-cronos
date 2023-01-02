@@ -9,13 +9,13 @@ import pe.com.cronos.core.token.domain.*;
 import java.util.HashMap;
 import java.util.Map;
 
-class DefaultTokenServiceTest {
+class DefaultTokenProviderTest {
 
-    static TokenService tokenService;
+    static TokenProvider tokenProvider;
 
     @BeforeAll
     static void beforeAll() {
-        tokenService = new DefaultTokenService();
+        tokenProvider = new DefaultTokenProvider();
     }
 
     @Test
@@ -36,7 +36,7 @@ class DefaultTokenServiceTest {
                 .data(data)
                 .build();
 
-        TokenCreationResponse tokenResponse = tokenService.create(tokenRequest);
+        TokenCreationResponse tokenResponse = tokenProvider.create(tokenRequest);
 
         Assertions.assertNotNull(tokenResponse);
     }
@@ -59,7 +59,7 @@ class DefaultTokenServiceTest {
                 .data(data)
                 .build();
 
-        Assertions.assertThrows(CronosException.class, () -> tokenService.create(tokenRequest));
+        Assertions.assertThrows(CronosException.class, () -> tokenProvider.create(tokenRequest));
     }
 
 
@@ -84,7 +84,7 @@ class DefaultTokenServiceTest {
                 .data(data)
                 .build();
 
-        TokenCreationResponse tokenResponse = tokenService.create(tokenRequest);
+        TokenCreationResponse tokenResponse = tokenProvider.create(tokenRequest);
 
         TokenValidationRequest tokenValidationRequest = TokenValidationRequest.builder()
                 .issuer(issuer)
@@ -92,7 +92,7 @@ class DefaultTokenServiceTest {
                 .token(tokenResponse.getToken())
                 .build();
 
-        TokenValidationResponse tokenValidationResponse = tokenService.validate(tokenValidationRequest);
+        TokenValidationResponse tokenValidationResponse = tokenProvider.validate(tokenValidationRequest);
 
         Assertions.assertNotNull(tokenValidationResponse);
     }
@@ -118,7 +118,7 @@ class DefaultTokenServiceTest {
                 .data(data)
                 .build();
 
-        TokenCreationResponse tokenResponse = tokenService.create(tokenRequest);
+        TokenCreationResponse tokenResponse = tokenProvider.create(tokenRequest);
 
         TokenValidationRequest tokenValidationRequest = TokenValidationRequest.builder()
                 .issuer(issuer)
@@ -126,7 +126,6 @@ class DefaultTokenServiceTest {
                 .token(tokenResponse.getToken())
                 .build();
 
-        Assertions.assertThrows(CronosException.class, () -> tokenService.validate(tokenValidationRequest));
-
+        Assertions.assertThrows(CronosException.class, () -> tokenProvider.validate(tokenValidationRequest));
     }
 }

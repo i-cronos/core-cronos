@@ -12,7 +12,7 @@ import pe.com.cronos.core.token.domain.*;
 
 import java.time.Instant;
 
-public class DefaultTokenService implements TokenService {
+public class DefaultTokenProvider implements TokenProvider {
 
     private static final String TOKEN_LABEL_ID = "_id";
     private static final String TOKEN_LABEL_TYPE = "_type";
