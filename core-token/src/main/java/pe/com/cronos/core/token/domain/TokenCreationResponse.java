@@ -2,6 +2,7 @@ package pe.com.cronos.core.token.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import pe.com.cronos.core.token.common.TokenType;
 
 @Getter
 @Builder

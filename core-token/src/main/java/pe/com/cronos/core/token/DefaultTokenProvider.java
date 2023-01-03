@@ -8,31 +8,38 @@ import pe.com.cronos.core.crypto.Digest;
 import pe.com.cronos.core.exceptions.CronosException;
 import pe.com.cronos.core.exceptions.domain.InfoFactory;
 import pe.com.cronos.core.exceptions.domain.Message;
+import pe.com.cronos.core.token.common.TokenConstant;
+import pe.com.cronos.core.token.common.TokenType;
 import pe.com.cronos.core.token.domain.*;
+import pe.com.cronos.core.token.properties.TokenGlobalProperties;
+import pe.com.cronos.core.token.properties.TokenSecretProperties;
 
 import java.time.Instant;
 
 public class DefaultTokenProvider implements TokenProvider {
 
-    private static final String TOKEN_LABEL_ID = "_id";
-    private static final String TOKEN_LABEL_TYPE = "_type";
-    private static final String TOKEN_LABEL_AUTHORITIES = "_grants";
-    private static final String TOKEN_LABEL_DATA = "_data";
+    private final TokenGlobalProperties tokenGlobalProperties;
+    private final TokenSecretProperties tokenSecretProperties;
+
+    public DefaultTokenProvider(TokenGlobalProperties tokenGlobalProperties, TokenSecretProperties tokenSecretProperties) {
+        this.tokenGlobalProperties = tokenGlobalProperties;
+        this.tokenSecretProperties = tokenSecretProperties;
+    }
 
     @Override
     public TokenCreationResponse create(TokenCreationRequest tokenCreationRequest) {
         try {
-            Algorithm algorithm = Algorithm.HMAC512(tokenCreationRequest.getKey());
+            Algorithm algorithm = Algorithm.HMAC512(tokenSecretProperties.solve(TokenSecretProperties.KEY));
             Instant now = Instant.now();
             String token = JWT.create()
-                    .withIssuer(tokenCreationRequest.getIssuer())
-                    .withSubject(tokenCreationRequest.getSubject())
-                    .withClaim(TOKEN_LABEL_TYPE, tokenCreationRequest.getTokenType().name())
-                    .withClaim(TOKEN_LABEL_ID, tokenCreationRequest.getId())
-                    .withArrayClaim(TOKEN_LABEL_AUTHORITIES, tokenCreationRequest.getAuthorities())
-                    .withClaim(TOKEN_LABEL_DATA, tokenCreationRequest.getData())
+                    .withIssuer(tokenGlobalProperties.getIssuer())
+                    .withSubject(tokenGlobalProperties.getSubject())
+                    .withClaim(TokenConstant.TOKEN_LABEL_TYPE, tokenCreationRequest.getTokenType().name())
+                    .withClaim(TokenConstant.TOKEN_LABEL_ID, tokenCreationRequest.getId())
+                    .withArrayClaim(TokenConstant.TOKEN_LABEL_AUTHORITIES, tokenCreationRequest.getAuthorities())
+                    .withClaim(TokenConstant.TOKEN_LABEL_DATA, tokenCreationRequest.getData())
                     .withIssuedAt(now)
-                    .withExpiresAt(now.plusSeconds(tokenCreationRequest.getTtl()))
+                    .withExpiresAt(now.plusSeconds(tokenGlobalProperties.getTtl()))
                     .sign(algorithm);
 
             String summary = Digest.digest(token);
@@ -51,19 +58,19 @@ public class DefaultTokenProvider implements TokenProvider {
     @Override
     public TokenValidationResponse validate(TokenValidationRequest tokenValidationRequest) {
         try {
-            Algorithm algorithm = Algorithm.HMAC512(tokenValidationRequest.getKey());
+            Algorithm algorithm = Algorithm.HMAC512(tokenSecretProperties.solve(TokenSecretProperties.KEY));
 
             JWTVerifier verifier = JWT.require(algorithm)
-                    .withIssuer(tokenValidationRequest.getIssuer())
+                    .withIssuer(tokenGlobalProperties.getIssuer())
                     .build();
 
             DecodedJWT jwt = verifier.verify(tokenValidationRequest.getToken());
 
             return TokenValidationResponse.builder()
-                    .tokenType(TokenType.valueOf(jwt.getClaim(TOKEN_LABEL_TYPE).asString()))
-                    .id(jwt.getClaim(TOKEN_LABEL_ID).asString())
-                    .authorities(jwt.getClaim(TOKEN_LABEL_AUTHORITIES).asArray(String.class))
-                    .data(jwt.getClaim(TOKEN_LABEL_DATA).asMap())
+                    .tokenType(TokenType.valueOf(jwt.getClaim(TokenConstant.TOKEN_LABEL_TYPE).asString()))
+                    .id(jwt.getClaim(TokenConstant.TOKEN_LABEL_ID).asString())
+                    .authorities(jwt.getClaim(TokenConstant.TOKEN_LABEL_AUTHORITIES).asArray(String.class))
+                    .data(jwt.getClaim(TokenConstant.TOKEN_LABEL_DATA).asMap())
                     .build();
 
 

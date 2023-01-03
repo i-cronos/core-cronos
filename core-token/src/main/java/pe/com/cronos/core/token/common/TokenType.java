@@ -1,4 +1,4 @@
-package pe.com.cronos.core.token.domain;
+package pe.com.cronos.core.token.common;
 
 public enum TokenType {
     USER,
