@@ -6,7 +6,6 @@ import pe.com.cronos.core.token.common.TokenType;
 
 import java.util.Map;
 
-
 @Getter
 @Builder
 public class TokenCreationRequest {
