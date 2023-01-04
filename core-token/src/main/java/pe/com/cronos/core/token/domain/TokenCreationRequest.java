@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import pe.com.cronos.core.token.common.TokenType;
 
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -11,6 +12,6 @@ import java.util.Map;
 public class TokenCreationRequest {
     private TokenType tokenType;
     private String id;
-    private String[] authorities;
+    private List<String> authorities;
     private Map<String, String> data;
 }

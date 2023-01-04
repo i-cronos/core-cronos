@@ -11,6 +11,7 @@ import pe.com.cronos.core.token.domain.TokenValidationResponse;
 import pe.com.cronos.core.token.properties.TokenGlobalProperties;
 import pe.com.cronos.core.token.properties.TokenSecretProperties;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -47,7 +48,7 @@ class DefaultTokenProviderTest {
         TokenCreationRequest tokenRequest = TokenCreationRequest.builder()
                 .tokenType(TokenType.USER)
                 .id("testUser")
-                .authorities(new String[]{"USER"})
+                .authorities(Collections.singletonList("USER"))
                 .data(data)
                 .build();
 
@@ -66,7 +67,7 @@ class DefaultTokenProviderTest {
         TokenCreationRequest tokenRequest = TokenCreationRequest.builder()
                 .tokenType(TokenType.USER)
                 .id("testUser")
-                .authorities(new String[]{"USER"})
+                .authorities(Collections.singletonList("USER"))
                 .data(data)
                 .build();
 
