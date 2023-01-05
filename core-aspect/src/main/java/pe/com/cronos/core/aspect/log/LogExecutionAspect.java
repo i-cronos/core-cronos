@@ -6,6 +6,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 
+import java.util.Objects;
+
 @Slf4j
 @Aspect
 public class LogExecutionAspect {
@@ -19,7 +21,13 @@ public class LogExecutionAspect {
         try {
             log.info("Start, {}.{} <- {}", className, methodName, methodSig.getParameterNames());
             Object response = joinPoint.proceed();
-            log.info("End, {}.{} -> {}", className, methodName, response.getClass().getSimpleName());
+
+            String output = "null";
+
+            if (Objects.nonNull(response))
+                output = response.getClass().getSimpleName();
+
+            log.info("End, {}.{} -> {}", className, methodName, output);
             return response;
         } catch (Throwable e) {
             log.error("Error, {}.{}", className, methodName);
