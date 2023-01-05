@@ -15,6 +15,7 @@
         <module>core-token</module>
         <module>core-exception</module>
         <module>core-dependencies</module>
+        <module>core-aspect</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -28,12 +29,7 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-                <version>5.9.0</version>
-                <scope>test</scope>
-            </dependency>
+            <!--cronos-->
             <dependency>
                 <groupId>pe.com.cronos</groupId>
                 <artifactId>core-constant</artifactId>
@@ -61,9 +57,49 @@
             </dependency>
             <dependency>
                 <groupId>pe.com.cronos</groupId>
+                <artifactId>core-aspect</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>pe.com.cronos</groupId>
                 <artifactId>core-dependencies</artifactId>
                 <version>${revision}</version>
                 <type>pom</type>
+            </dependency>
+
+            <!--spring-->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>5.3.23</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot</artifactId>
+                <version>2.7.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>1.9.7</version>
+            </dependency>
+
+            <!--complements-->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>5.9.0</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.24</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.36</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -147,7 +183,9 @@
     <distributionManagement>
         <repository>
             <id>cronos-artifacts-repository</id>
-            <url>https://pkgs.dev.azure.com/cronos3141516/cronos-backend/_packaging/cronos-artifacts-repository/maven/v1</url>
+            <url>
+                https://pkgs.dev.azure.com/cronos3141516/cronos-backend/_packaging/cronos-artifacts-repository/maven/v1
+            </url>
         </repository>
     </distributionManagement>
 
