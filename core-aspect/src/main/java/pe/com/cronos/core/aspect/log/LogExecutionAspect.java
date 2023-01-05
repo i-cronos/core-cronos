@@ -11,10 +11,9 @@ public class LogExecutionAspect {
 
     @Around("@annotation(pe.com.cronos.core.aspect.log.LogExecution)")
     public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
-        String className = joinPoint.getTarget().getClass().getName();
+        String className = joinPoint.getTarget().getClass().getCanonicalName();
         String methodName = joinPoint.getSignature().getName();
         try {
-
             log.info("Start, {}.{}", className, methodName);
             Object response = joinPoint.proceed();
             log.info("End, {}.{}", className, methodName);
