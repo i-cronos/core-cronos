@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.http.HttpStatus;
 import pe.com.cronos.core.crypto.Digest;
 import pe.com.cronos.core.exceptions.CronosException;
 import pe.com.cronos.core.exceptions.domain.InfoFactory;
@@ -53,7 +54,7 @@ public class DefaultTokenProvider implements TokenProvider {
                     .build();
 
         } catch (Exception ex) {
-            throw new CronosException(InfoFactory.get(Message.CORE_TOKEN_CREATION, ex));
+            throw new CronosException(InfoFactory.map(Message.CORE_TOKEN_CREATION, HttpStatus.INTERNAL_SERVER_ERROR, ex));
         }
     }
 
@@ -78,7 +79,7 @@ public class DefaultTokenProvider implements TokenProvider {
 
 
         } catch (Exception ex) {
-            throw new CronosException(InfoFactory.get(Message.CORE_TOKEN_VALIDATION, ex));
+            throw new CronosException(InfoFactory.map(Message.CORE_TOKEN_VALIDATION, HttpStatus.INTERNAL_SERVER_ERROR, ex));
         }
     }
 

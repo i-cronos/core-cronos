@@ -1,6 +1,7 @@
 package pe.com.cronos.core.crypto;
 
 import org.apache.commons.codec.binary.Hex;
+import org.springframework.http.HttpStatus;
 import pe.com.cronos.core.exceptions.CronosException;
 import pe.com.cronos.core.exceptions.domain.InfoFactory;
 import pe.com.cronos.core.exceptions.domain.Message;
@@ -22,7 +23,7 @@ public final class Digest {
 
             return Hex.encodeHexString(result);
         } catch (NoSuchAlgorithmException ex) {
-            throw new CronosException(InfoFactory.get(Message.CORE_CRYPTO_DIGEST, ex));
+            throw new CronosException(InfoFactory.map(Message.CORE_CRYPTO_DIGEST, HttpStatus.BAD_REQUEST, ex));
         }
     }
 }
