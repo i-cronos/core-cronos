@@ -27,10 +27,10 @@ public class LogTimeAspect {
             if (Objects.nonNull(response))
                 output = response.getClass().getSimpleName();
 
-            log.info("End, {}.{} -> {} , time: {}", className, methodName, output, (System.currentTimeMillis() - start));
+            log.info("End, {}.{} -> {} , time: {}ms", className, methodName, output, (System.currentTimeMillis() - start));
             return response;
         } catch (Throwable e) {
-            log.error("Error, {}.{}, time: {}", className, methodName, (System.currentTimeMillis() - start));
+            log.error("Error, {}.{}, time: {}ms", className, methodName, (System.currentTimeMillis() - start));
             throw e;
         }
     }
