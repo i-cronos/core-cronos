@@ -3,11 +3,13 @@ package pe.com.cronos.core.aspect.time;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 
 import java.util.Objects;
 
 @Slf4j
+@Aspect
 public class LogTimeAspect {
 
     @Around("@annotation(pe.com.cronos.core.aspect.time.LogTime)")
