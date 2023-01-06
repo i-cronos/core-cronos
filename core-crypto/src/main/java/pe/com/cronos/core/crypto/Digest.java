@@ -9,13 +9,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public final class Digest {
+    public static final String SHA256 = "SHA-256";
+    public static final String SHA512 = "SHA-512";
 
     private Digest() {
     }
 
-    public static String digest(String data) {
+    public static String digest(String data, String algorithm) {
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            MessageDigest md = MessageDigest.getInstance(algorithm);
             byte[] result = md.digest(data.getBytes());
 
             return Hex.encodeHexString(result);
