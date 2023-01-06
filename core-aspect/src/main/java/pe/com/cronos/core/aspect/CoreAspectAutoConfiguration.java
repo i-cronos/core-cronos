@@ -6,7 +6,7 @@ import pe.com.cronos.core.aspect.log.LogExecutionAspect;
 import pe.com.cronos.core.aspect.time.LogTimeAspect;
 
 @Configuration
-public class LogExecutionAutoConfiguration {
+public class CoreAspectAutoConfiguration {
 
     @Bean
     public LogExecutionAspect logExecutionAspect() {
