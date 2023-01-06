@@ -43,7 +43,7 @@ public class DefaultTokenProvider implements TokenProvider {
                     .withExpiresAt(now.plusSeconds(tokenGlobalProperties.getTtl()))
                     .sign(algorithm);
 
-            String summary = Digest.digest(token);
+            String summary = Digest.digest(token, Digest.SHA256);
 
             return TokenCreationResponse.builder()
                     .tokenType(tokenCreationRequest.getTokenType())
