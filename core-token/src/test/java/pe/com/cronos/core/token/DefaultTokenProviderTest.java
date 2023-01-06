@@ -46,7 +46,7 @@ class DefaultTokenProviderTest {
         data.put("data3", "Test 3");
 
         TokenCreationRequest tokenRequest = TokenCreationRequest.builder()
-                .tokenType(TokenType.USER)
+                .tokenType(TokenType.PERSON)
                 .id("testUser")
                 .authorities(Collections.singletonList("USER"))
                 .data(data)
@@ -65,7 +65,7 @@ class DefaultTokenProviderTest {
         data.put("data3", "Test 3");
 
         TokenCreationRequest tokenRequest = TokenCreationRequest.builder()
-                .tokenType(TokenType.USER)
+                .tokenType(TokenType.PERSON)
                 .id("testUser")
                 .authorities(Collections.singletonList("USER"))
                 .data(data)
