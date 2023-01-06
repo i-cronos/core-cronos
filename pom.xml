@@ -88,7 +88,11 @@
                 <artifactId>aspectjweaver</artifactId>
                 <version>1.9.7</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-core</artifactId>
+                <version>9.0.6</version>
+            </dependency>
             <!--complements-->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import pe.com.cronos.core.exceptions.CronosException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
 
@@ -16,14 +17,14 @@ import java.time.LocalDateTime;
 public class CoreControllerExceptionHandler {
 
     @ExceptionHandler(value = {CronosException.class})
-    public ResponseEntity<ErrorModel> cronosException(CronosException ex, WebRequest request) {
+    public ResponseEntity<ErrorModel> cronosException(CronosException ex, HttpServletRequest request) {
         ErrorModel message = ErrorModel.builder()
                 .timestamp(LocalDateTime.now())
                 .error(ex.getErrorInfo().getUserMessage())
                 .groupCode(ex.getErrorInfo().getGroup().getCode())
                 .errorCode(ex.getErrorInfo().getCode())
                 .status(ex.getErrorInfo().getHttpStatus().name())
-                .path(request.getContextPath())
+                .path(request.getServletPath())
                 .build();
 
         log.error("Detail: {}", message);
