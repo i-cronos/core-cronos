@@ -36,6 +36,7 @@ public class DefaultTokenProvider implements TokenProvider {
                     .withIssuer(tokenGlobalProperties.getIssuer())
                     .withSubject(tokenGlobalProperties.getSubject())
                     .withClaim(TokenConstant.TOKEN_LABEL_TYPE, tokenCreationRequest.getTokenType().name())
+                    .withClaim(TokenConstant.TOKEN_LABEL_UID, tokenCreationRequest.getUid())
                     .withClaim(TokenConstant.TOKEN_LABEL_ID, tokenCreationRequest.getId())
                     .withArrayClaim(TokenConstant.TOKEN_LABEL_AUTHORITIES, listToArray(tokenCreationRequest.getAuthorities()))
                     .withClaim(TokenConstant.TOKEN_LABEL_DATA, tokenCreationRequest.getData())
@@ -69,6 +70,7 @@ public class DefaultTokenProvider implements TokenProvider {
 
             return TokenValidationResponse.builder()
                     .tokenType(TokenType.valueOf(jwt.getClaim(TokenConstant.TOKEN_LABEL_TYPE).asString()))
+                    .uid(jwt.getClaim(TokenConstant.TOKEN_LABEL_UID).asString())
                     .id(jwt.getClaim(TokenConstant.TOKEN_LABEL_ID).asString())
                     .authorities(arrayToList(jwt.getClaim(TokenConstant.TOKEN_LABEL_AUTHORITIES).asArray(String.class)))
                     .data(jwt.getClaim(TokenConstant.TOKEN_LABEL_DATA).asMap())

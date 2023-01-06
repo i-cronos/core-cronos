@@ -11,6 +11,7 @@ import java.util.Map;
 @Builder
 public class TokenCreationRequest {
     private TokenType tokenType;
+    private String uid;
     private String id;
     private List<String> authorities;
     private Map<String, String> data;
