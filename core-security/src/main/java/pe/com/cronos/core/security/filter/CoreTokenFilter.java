@@ -46,7 +46,7 @@ public class CoreTokenFilter extends OncePerRequestFilter {
 
             TokenValidationResponse tokenValidationResponse = tokenProvider.validate(tokenValidationRequest);
 
-            log.info("Core token filter, type: {}, _uid: {}", tokenValidationResponse.getTokenType(), tokenValidationResponse.getUid());
+            log.info("Core token filter, type token: {}, _uid: {}", tokenValidationResponse.getTokenType(), tokenValidationResponse.getUid());
 
             List<SimpleGrantedAuthority> authorities = tokenValidationResponse.getAuthorities()
                     .stream().map(SimpleGrantedAuthority::new)
