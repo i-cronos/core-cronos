@@ -28,21 +28,21 @@ public class CoreControllerExceptionHandler {
                 .build();
 
         log.error("Detail: {}", message);
-        return new ResponseEntity<ErrorModel>(message, ex.getErrorInfo().getHttpStatus());
+        return new ResponseEntity<>(message, ex.getErrorInfo().getHttpStatus());
     }
 
     @ExceptionHandler(value = {Exception.class})
-    public ResponseEntity<ErrorModel> exception(Exception ex, WebRequest request) {
+    public ResponseEntity<ErrorModel> exception(Exception ex, HttpServletRequest request) {
         ErrorModel message = ErrorModel.builder()
                 .timestamp(LocalDateTime.now())
                 .error(ex.getMessage())
                 .groupCode("")
                 .errorCode("")
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.name())
-                .path(request.getContextPath())
+                .path(request.getServletPath())
                 .build();
 
         log.error("Detail: {}", message);
-        return new ResponseEntity<ErrorModel>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
