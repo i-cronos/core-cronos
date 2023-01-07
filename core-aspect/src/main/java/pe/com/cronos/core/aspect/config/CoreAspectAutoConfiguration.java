@@ -1,4 +1,4 @@
-package pe.com.cronos.core.aspect;
+package pe.com.cronos.core.aspect.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -12,7 +12,7 @@ import pe.com.cronos.core.token.TokenProvider;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
-public class AppSecurityAutoConfiguration {
+public class AppCoreSecurityAutoConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, TokenProvider tokenProvider) throws Exception {
