@@ -79,7 +79,7 @@ public class DefaultTokenProvider implements TokenProvider {
 
 
         } catch (Exception ex) {
-            throw new CronosException(InfoFactory.map(Message.CORE_TOKEN_VALIDATION, HttpStatus.INTERNAL_SERVER_ERROR, ex));
+            throw new CronosException(InfoFactory.map(Message.CORE_TOKEN_VALIDATION, HttpStatus.FORBIDDEN, ex));
         }
     }
 
