@@ -46,7 +46,7 @@ public class CoreTokenFilter extends OncePerRequestFilter {
 
             TokenValidationResponse tokenValidationResponse = tokenProvider.validate(tokenValidationRequest);
 
-            log.info("tokenValidationResponse : {}", tokenValidationResponse);
+            log.info("Core token filter, tokenValidationResponse : {}", tokenValidationResponse);
 
             List<SimpleGrantedAuthority> authorities = tokenValidationResponse.getAuthorities()
                     .stream().map(SimpleGrantedAuthority::new)
@@ -57,8 +57,10 @@ public class CoreTokenFilter extends OncePerRequestFilter {
 
             return true;
         } catch (CronosException ex) {
+            log.error("Core token filter, error: {}", ex.getErrorInfo());
             response.setStatus(ex.getErrorInfo().getHttpStatus().value());
         } catch (Exception ex) {
+            log.error("Core token filter, unknown error: {}", ex.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
 
