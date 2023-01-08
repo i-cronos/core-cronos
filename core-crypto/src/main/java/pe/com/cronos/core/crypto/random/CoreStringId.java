@@ -12,7 +12,7 @@ public final class CoreStringId {
         this.coreDigest = new CoreDigest();
     }
 
-    private String randomId() {
+    public String randomId() {
         String id = UUID.randomUUID().toString() + LocalDateTime.now();
 
         return coreDigest.digest(id, CoreDigest.SHA256);
