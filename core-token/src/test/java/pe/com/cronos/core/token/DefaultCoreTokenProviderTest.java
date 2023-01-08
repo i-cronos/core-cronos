@@ -3,6 +3,7 @@ package pe.com.cronos.core.token;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import pe.com.cronos.core.crypto.hash.CoreDigest;
 import pe.com.cronos.core.token.common.TokenType;
 import pe.com.cronos.core.token.domain.TokenCreationRequest;
 import pe.com.cronos.core.token.domain.TokenCreationResponse;
@@ -16,10 +17,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-class DefaultTokenProviderTest {
+class DefaultCoreTokenProviderTest {
 
 
-    static TokenProvider tokenProvider;
+    static CoreTokenProvider tokenProvider;
 
 
     @BeforeAll
@@ -35,7 +36,7 @@ class DefaultTokenProviderTest {
         properties.setProperty(TokenSecretProperties.KEY, "Test key");
         tokenSecretProperties.setProperties(properties);
 
-        tokenProvider = new DefaultTokenProvider(tokenGlobalProperties, tokenSecretProperties);
+        tokenProvider = new DefaultCoreTokenProvider(tokenGlobalProperties, tokenSecretProperties, new CoreDigest());
     }
 
     @Test

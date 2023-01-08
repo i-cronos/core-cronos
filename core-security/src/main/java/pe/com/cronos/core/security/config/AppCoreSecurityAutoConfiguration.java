@@ -8,14 +8,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import pe.com.cronos.core.security.filter.CoreTokenFilter;
 import pe.com.cronos.core.security.filter.CoreWardenFilter;
-import pe.com.cronos.core.token.TokenProvider;
+import pe.com.cronos.core.token.CoreTokenProvider;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class AppCoreSecurityAutoConfiguration {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, TokenProvider tokenProvider) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, CoreTokenProvider tokenProvider) throws Exception {
         http.csrf().disable();
 
         http.httpBasic().disable();

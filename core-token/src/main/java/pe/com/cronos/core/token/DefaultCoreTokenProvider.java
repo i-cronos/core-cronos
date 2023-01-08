@@ -4,8 +4,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import pe.com.cronos.core.crypto.Digest;
+import pe.com.cronos.core.crypto.hash.CoreDigest;
 import pe.com.cronos.core.exceptions.CronosException;
 import pe.com.cronos.core.exceptions.domain.InfoFactory;
 import pe.com.cronos.core.exceptions.domain.Message;
@@ -18,15 +19,12 @@ import pe.com.cronos.core.token.properties.TokenSecretProperties;
 import java.time.Instant;
 import java.util.*;
 
-public class DefaultTokenProvider implements TokenProvider {
+@AllArgsConstructor
+public class DefaultCoreTokenProvider implements CoreTokenProvider {
 
     private final TokenGlobalProperties tokenGlobalProperties;
     private final TokenSecretProperties tokenSecretProperties;
-
-    public DefaultTokenProvider(TokenGlobalProperties tokenGlobalProperties, TokenSecretProperties tokenSecretProperties) {
-        this.tokenGlobalProperties = tokenGlobalProperties;
-        this.tokenSecretProperties = tokenSecretProperties;
-    }
+    private final CoreDigest coreDigest;
 
     @Override
     public TokenCreationResponse create(TokenCreationRequest tokenCreationRequest) {
@@ -45,7 +43,7 @@ public class DefaultTokenProvider implements TokenProvider {
                     .withExpiresAt(now.plusSeconds(tokenGlobalProperties.getTtl()))
                     .sign(algorithm);
 
-            String summary = Digest.digest(token, Digest.SHA256);
+            String summary = coreDigest.digest(token, CoreDigest.SHA256);
 
             return TokenCreationResponse.builder()
                     .tokenType(tokenCreationRequest.getTokenType())
@@ -86,13 +84,13 @@ public class DefaultTokenProvider implements TokenProvider {
     private String[] listToArray(List<String> authorities) {
         if (Objects.nonNull(authorities))
             return authorities.stream().toArray(String[]::new);
-        return null;
+        return new String[]{};
     }
 
     private List<String> arrayToList(String[] authorities) {
         if (Objects.nonNull(authorities)) {
             return Arrays.asList(authorities);
         }
-        return null;
+        return Collections.emptyList();
     }
 }

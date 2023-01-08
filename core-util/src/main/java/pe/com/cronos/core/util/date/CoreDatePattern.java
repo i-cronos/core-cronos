@@ -1,8 +1,8 @@
-package pe.com.cronos.core.util;
+package pe.com.cronos.core.util.date;
 
-public final class DatePattern {
+public final class CoreDatePattern {
 
-    private DatePattern() {
+    private CoreDatePattern() {
     }
 
     public static final String DD_MM_YYYY = "dd/MM/yyyy";

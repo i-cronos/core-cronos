@@ -7,7 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pe.com.cronos.core.exceptions.CronosException;
-import pe.com.cronos.core.token.TokenProvider;
+import pe.com.cronos.core.token.CoreTokenProvider;
 import pe.com.cronos.core.token.domain.TokenValidationRequest;
 import pe.com.cronos.core.token.domain.TokenValidationResponse;
 
@@ -21,11 +21,11 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class CoreTokenFilter extends OncePerRequestFilter {
-    private final TokenProvider tokenProvider;
+    private final CoreTokenProvider coreTokenProvider;
     private static final String BEARER = "Bearer ";
 
-    public CoreTokenFilter(TokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
+    public CoreTokenFilter(CoreTokenProvider coreTokenProvider) {
+        this.coreTokenProvider = coreTokenProvider;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class CoreTokenFilter extends OncePerRequestFilter {
                     .token(tokenHeader.substring(BEARER.length()))
                     .build();
 
-            TokenValidationResponse tokenValidationResponse = tokenProvider.validate(tokenValidationRequest);
+            TokenValidationResponse tokenValidationResponse = coreTokenProvider.validate(tokenValidationRequest);
 
             log.info("Core token filter, type token: {}, _uid: {}", tokenValidationResponse.getTokenType(), tokenValidationResponse.getUid());
 
