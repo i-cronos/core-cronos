@@ -36,7 +36,7 @@ public class DefaultCoreTokenProvider implements CoreTokenProvider {
                     .withSubject(tokenGlobalProperties.getSubject())
                     .withClaim(TokenConstant.TOKEN_LABEL_TYPE, tokenCreationRequest.getTokenType().name())
                     .withClaim(TokenConstant.TOKEN_LABEL_UID, tokenCreationRequest.getUid())
-                    .withClaim(TokenConstant.TOKEN_LABEL_ID, tokenCreationRequest.getId())
+                    .withClaim(TokenConstant.TOKEN_LABEL_UNAME, tokenCreationRequest.getCredentialId())
                     .withArrayClaim(TokenConstant.TOKEN_LABEL_AUTHORITIES, listToArray(tokenCreationRequest.getAuthorities()))
                     .withClaim(TokenConstant.TOKEN_LABEL_DATA, tokenCreationRequest.getData())
                     .withIssuedAt(now)
@@ -69,8 +69,8 @@ public class DefaultCoreTokenProvider implements CoreTokenProvider {
 
             return TokenValidationResponse.builder()
                     .tokenType(TokenType.valueOf(jwt.getClaim(TokenConstant.TOKEN_LABEL_TYPE).asString()))
-                    .uid(jwt.getClaim(TokenConstant.TOKEN_LABEL_UID).asString())
-                    .id(jwt.getClaim(TokenConstant.TOKEN_LABEL_ID).asString())
+                    .id(jwt.getClaim(TokenConstant.TOKEN_LABEL_UID).asString())
+                    .credentialId(jwt.getClaim(TokenConstant.TOKEN_LABEL_UNAME).asString())
                     .authorities(arrayToList(jwt.getClaim(TokenConstant.TOKEN_LABEL_AUTHORITIES).asArray(String.class)))
                     .data(jwt.getClaim(TokenConstant.TOKEN_LABEL_DATA).asMap())
                     .build();

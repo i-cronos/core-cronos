@@ -1,12 +1,11 @@
 package pe.com.cronos.core.security.filter;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pe.com.cronos.core.exceptions.CronosException;
+import pe.com.cronos.core.security.domain.CoreAuthenticatedUser;
 import pe.com.cronos.core.token.CoreTokenProvider;
 import pe.com.cronos.core.token.domain.TokenValidationRequest;
 import pe.com.cronos.core.token.domain.TokenValidationResponse;
@@ -17,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -46,14 +46,15 @@ public class CoreTokenFilter extends OncePerRequestFilter {
 
             TokenValidationResponse tokenValidationResponse = coreTokenProvider.validate(tokenValidationRequest);
 
-            log.info("Core token filter, type token: {}, _uid: {}", tokenValidationResponse.getTokenType(), tokenValidationResponse.getUid());
+            log.info("Core token filter, type token: {}, _uid: {}", tokenValidationResponse.getTokenType(), tokenValidationResponse.getId());
 
             List<SimpleGrantedAuthority> authorities = tokenValidationResponse.getAuthorities()
                     .stream().map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(tokenValidationResponse.getId(), null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            UUID uuid = UUID.fromString(tokenValidationResponse.getId());
+            CoreAuthenticatedUser coreAuthenticatedUser = new CoreAuthenticatedUser(tokenValidationResponse.getCredentialId(), null, authorities, uuid);
+            SecurityContextHolder.getContext().setAuthentication(coreAuthenticatedUser);
 
             return true;
         } catch (CronosException ex) {
