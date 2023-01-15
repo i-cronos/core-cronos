@@ -1,7 +1,8 @@
 package pe.com.cronos.core.token.common;
 
 public enum TokenType {
-    PERSON,
-    APP_LOCAL,
+    USER,
+    APP_CLIENT,
+    APP_INTERNAL,
     APP_THIRD
 }
