@@ -40,7 +40,7 @@ public class DefaultCoreTokenProvider implements CoreTokenProvider {
                     .withArrayClaim(TokenConstant.TOKEN_LABEL_AUTHORITIES, listToArray(tokenCreationRequest.getAuthorities()))
                     .withClaim(TokenConstant.TOKEN_LABEL_DATA, tokenCreationRequest.getData())
                     .withIssuedAt(now)
-                    .withExpiresAt(now.plusSeconds(tokenGlobalProperties.getTtl()))
+                    .withExpiresAt(now.plusSeconds(tokenCreationRequest.getTokenType().getTtl()))
                     .sign(algorithm);
 
             String summary = coreDigest.digest(token, CoreDigest.SHA256);
