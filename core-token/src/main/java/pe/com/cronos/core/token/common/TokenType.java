@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum TokenType {
     USER(1200),
     APP_CLIENT(600),
-    APP_INTERNAL(4200),
+    APP_PRIVATE(4200),
     APP_THIRD(600);
 
     private int ttl;

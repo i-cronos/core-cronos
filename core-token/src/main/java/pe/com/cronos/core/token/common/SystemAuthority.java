@@ -10,7 +10,7 @@ public enum SystemAuthority {
     ROLE_OPERATOR("ROLE_OPERATOR", TokenType.USER, "All operation"),
     ROLE_USER("ROLE_USER", TokenType.USER, "custom operation"),
     ROLE_APP_CLIENT("ROLE_APP_CLIENT", TokenType.APP_CLIENT, "app operation"),
-    ROLE_APP_CLIENT_INTERNAL("ROLE_APP_CLIENT_INTERNAL", TokenType.APP_INTERNAL, "app operation"),
+    ROLE_APP_CLIENT_PRIVATE("ROLE_APP_CLIENT_PRIVATE", TokenType.APP_PRIVATE, "app operation"),
     ROLE_APP_CLIENT_THIRD("ROLE_APP_CLIENT_THIRD", TokenType.APP_THIRD, "app operation");
 
     private String name;
