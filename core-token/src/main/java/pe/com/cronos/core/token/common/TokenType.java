@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum TokenType {
-    USER(1200),
+    HUMAN(1200),
     APP_CLIENT(600),
     APP_PRIVATE(4200),
     APP_THIRD(600);

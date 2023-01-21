@@ -47,7 +47,7 @@ class DefaultCoreTokenProviderTest {
         data.put("data3", "Test 3");
 
         TokenCreationRequest tokenRequest = TokenCreationRequest.builder()
-                .tokenType(TokenType.USER)
+                .tokenType(TokenType.HUMAN)
                 .uid("3be9b62181bd5269a20f454f6b5574d43f38e824c40c602ea9622a0ba96f76b7")
                 .credentialId("testUser")
                 .authorities(Collections.singletonList("USER"))
@@ -67,7 +67,7 @@ class DefaultCoreTokenProviderTest {
         data.put("data3", "Test 3");
 
         TokenCreationRequest tokenRequest = TokenCreationRequest.builder()
-                .tokenType(TokenType.USER)
+                .tokenType(TokenType.HUMAN)
                 .uid("3be9b62181bd5269a20f454f6b5574d43f38e824c40c602ea9622a0ba96f76b7")
                 .credentialId("testUser")
                 .authorities(Collections.singletonList("USER"))
