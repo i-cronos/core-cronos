@@ -1,11 +1,16 @@
 package pe.com.cronos.core.security.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pe.com.cronos.core.exceptions.CronosException;
+import pe.com.cronos.core.exceptions.config.ErrorModel;
+import pe.com.cronos.core.exceptions.domain.Message;
 import pe.com.cronos.core.security.domain.CoreAuthenticatedUser;
+import pe.com.cronos.core.security.util.ErrorResponseUtil;
 import pe.com.cronos.core.token.CoreTokenProvider;
 import pe.com.cronos.core.token.domain.TokenValidationRequest;
 import pe.com.cronos.core.token.domain.TokenValidationResponse;
@@ -21,11 +26,15 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class CoreTokenFilter extends OncePerRequestFilter {
-    private final CoreTokenProvider coreTokenProvider;
     private static final String BEARER = "Bearer ";
+    private final CoreTokenProvider coreTokenProvider;
+    private final ErrorResponseUtil errorResponseUtil;
+    private final ObjectMapper objectMapper;
 
-    public CoreTokenFilter(CoreTokenProvider coreTokenProvider) {
+    public CoreTokenFilter(CoreTokenProvider coreTokenProvider, ErrorResponseUtil errorResponseUtil, ObjectMapper objectMapper) {
         this.coreTokenProvider = coreTokenProvider;
+        this.errorResponseUtil = errorResponseUtil;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -36,7 +45,7 @@ public class CoreTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
     }
 
-    private boolean validate(HttpServletRequest request, HttpServletResponse response) {
+    private boolean validate(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             String tokenHeader = request.getHeader("Authorization");
 
@@ -60,9 +69,13 @@ public class CoreTokenFilter extends OncePerRequestFilter {
         } catch (CronosException ex) {
             log.error("Core token filter, error: {}", ex.getErrorInfo());
             response.setStatus(ex.getErrorInfo().getHttpStatus().value());
+            ErrorModel errorModel = errorResponseUtil.map(request, ex.getErrorInfo());
+            response.getWriter().write(objectMapper.writeValueAsString(errorModel));
         } catch (Exception ex) {
-            log.error("Core token filter, unknown error: {}", ex.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            ErrorModel errorModel = errorResponseUtil.map(request, Message.CORE_TOKEN_VALIDATION_UNKNOWN, HttpStatus.FORBIDDEN);
+            log.error("Core token filter, unknown error: {}, {}", ex.getMessage(), errorModel);
+            response.getWriter().write(objectMapper.writeValueAsString(errorModel));
         }
 
         return false;

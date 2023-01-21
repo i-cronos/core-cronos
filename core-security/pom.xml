@@ -37,6 +37,10 @@
             <groupId>pe.com.cronos</groupId>
             <artifactId>core-token</artifactId>
         </dependency>
+        <dependency>
+            <groupId>pe.com.cronos</groupId>
+            <artifactId>core-exception</artifactId>
+        </dependency>
 
         <!-- spring -->
         <dependency>

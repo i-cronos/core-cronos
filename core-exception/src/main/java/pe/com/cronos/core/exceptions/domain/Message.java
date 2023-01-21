@@ -1,8 +1,10 @@
 package pe.com.cronos.core.exceptions.domain;
 
 public enum Message {
+    CORE_TOKEN_NOT_FOUND(Group.CORE_TOKEN, "C-T-1000", "Token not found in request", DefaultMessage.CORE_ERROR),
     CORE_TOKEN_CREATION(Group.CORE_TOKEN, "C-T-1001", "Error in token creation", DefaultMessage.CORE_ERROR),
     CORE_TOKEN_VALIDATION(Group.CORE_TOKEN, "C-T-1002", "Error in token validation", DefaultMessage.CORE_ERROR),
+    CORE_TOKEN_VALIDATION_UNKNOWN(Group.CORE_TOKEN, "C-T-1003", "Unknown error  in token validation", DefaultMessage.CORE_ERROR),
 
     CORE_CRYPTO_DIGEST(Group.CORE_CRYPTO, "C-C-1003", "Error in create digest", DefaultMessage.CORE_ERROR),
 
