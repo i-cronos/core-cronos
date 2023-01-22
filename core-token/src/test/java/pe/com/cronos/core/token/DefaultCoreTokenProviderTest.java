@@ -3,6 +3,7 @@ package pe.com.cronos.core.token;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import pe.com.cronos.core.crypto.hash.CoreDigest;
 import pe.com.cronos.core.token.common.TokenType;
 import pe.com.cronos.core.token.domain.TokenCreationRequest;
 import pe.com.cronos.core.token.domain.TokenCreationResponse;
@@ -16,10 +17,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-class DefaultTokenProviderTest {
+class DefaultCoreTokenProviderTest {
 
 
-    static TokenProvider tokenProvider;
+    static CoreTokenProvider tokenProvider;
 
 
     @BeforeAll
@@ -35,7 +36,7 @@ class DefaultTokenProviderTest {
         properties.setProperty(TokenSecretProperties.KEY, "Test key");
         tokenSecretProperties.setProperties(properties);
 
-        tokenProvider = new DefaultTokenProvider(tokenGlobalProperties, tokenSecretProperties);
+        tokenProvider = new DefaultCoreTokenProvider(tokenGlobalProperties, tokenSecretProperties, new CoreDigest());
     }
 
     @Test
@@ -46,9 +47,9 @@ class DefaultTokenProviderTest {
         data.put("data3", "Test 3");
 
         TokenCreationRequest tokenRequest = TokenCreationRequest.builder()
-                .tokenType(TokenType.PERSON)
+                .tokenType(TokenType.HUMAN)
                 .uid("3be9b62181bd5269a20f454f6b5574d43f38e824c40c602ea9622a0ba96f76b7")
-                .id("testUser")
+                .credentialId("testUser")
                 .authorities(Collections.singletonList("USER"))
                 .data(data)
                 .build();
@@ -66,9 +67,9 @@ class DefaultTokenProviderTest {
         data.put("data3", "Test 3");
 
         TokenCreationRequest tokenRequest = TokenCreationRequest.builder()
-                .tokenType(TokenType.PERSON)
+                .tokenType(TokenType.HUMAN)
                 .uid("3be9b62181bd5269a20f454f6b5574d43f38e824c40c602ea9622a0ba96f76b7")
-                .id("testUser")
+                .credentialId("testUser")
                 .authorities(Collections.singletonList("USER"))
                 .data(data)
                 .build();

@@ -18,7 +18,7 @@ public class CoreControllerExceptionHandler {
     @ExceptionHandler(value = {CronosException.class})
     public ResponseEntity<ErrorModel> cronosException(CronosException ex, HttpServletRequest request) {
         ErrorModel message = ErrorModel.builder()
-                .timestamp(LocalDateTime.now())
+                .timestamp(LocalDateTime.now().toString())
                 .error(ex.getErrorInfo().getUserMessage())
                 .groupCode(ex.getErrorInfo().getGroup().getCode())
                 .errorCode(ex.getErrorInfo().getCode())
@@ -33,7 +33,7 @@ public class CoreControllerExceptionHandler {
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<ErrorModel> exception(Exception ex, HttpServletRequest request) {
         ErrorModel message = ErrorModel.builder()
-                .timestamp(LocalDateTime.now())
+                .timestamp(LocalDateTime.now().toString())
                 .error(ex.getMessage())
                 .groupCode("")
                 .errorCode("")

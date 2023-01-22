@@ -5,7 +5,7 @@ import pe.com.cronos.core.token.domain.TokenCreationResponse;
 import pe.com.cronos.core.token.domain.TokenValidationRequest;
 import pe.com.cronos.core.token.domain.TokenValidationResponse;
 
-public interface TokenProvider {
+public interface CoreTokenProvider {
 
     TokenCreationResponse create(TokenCreationRequest tokenCreationRequest);
 

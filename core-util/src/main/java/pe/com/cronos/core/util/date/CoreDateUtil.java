@@ -1,11 +1,11 @@
-package pe.com.cronos.core.util;
+package pe.com.cronos.core.util.date;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-public final class DateUtil {
+public final class CoreDateUtil {
 
     public static String dateToString(LocalDate localDate, String pattern) {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(pattern);

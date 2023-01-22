@@ -12,7 +12,7 @@ import java.util.Map;
 public class TokenCreationRequest {
     private TokenType tokenType;
     private String uid;
-    private String id;
+    private String credentialId;
     private List<String> authorities;
     private Map<String, String> data;
 }

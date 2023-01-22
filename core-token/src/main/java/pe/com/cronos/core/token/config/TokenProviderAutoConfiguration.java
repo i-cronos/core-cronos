@@ -3,8 +3,9 @@ package pe.com.cronos.core.token.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pe.com.cronos.core.token.DefaultTokenProvider;
-import pe.com.cronos.core.token.TokenProvider;
+import pe.com.cronos.core.crypto.hash.CoreDigest;
+import pe.com.cronos.core.token.DefaultCoreTokenProvider;
+import pe.com.cronos.core.token.CoreTokenProvider;
 import pe.com.cronos.core.token.properties.TokenGlobalProperties;
 import pe.com.cronos.core.token.properties.TokenSecretProperties;
 
@@ -32,7 +33,7 @@ public class TokenProviderAutoConfiguration {
     }
 
     @Bean
-    public TokenProvider tokenProvider(TokenGlobalProperties tokenGlobalProperties, TokenSecretProperties tokenSecretProperties) {
-        return new DefaultTokenProvider(tokenGlobalProperties, tokenSecretProperties);
+    public CoreTokenProvider coreTokenProvider(TokenGlobalProperties tokenGlobalProperties, TokenSecretProperties tokenSecretProperties) {
+        return new DefaultCoreTokenProvider(tokenGlobalProperties, tokenSecretProperties, new CoreDigest());
     }
 }

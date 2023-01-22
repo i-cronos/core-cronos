@@ -16,6 +16,7 @@
         <module>core-exception</module>
         <module>core-dependencies</module>
         <module>core-aspect</module>
+        <module>core-security</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -24,7 +25,8 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <revision>0.0.1-SNAPSHOT</revision>
+        <revision>1.0.0-SNAPSHOT</revision>
+        <spring.version>2.7.7</spring.version>
     </properties>
 
     <dependencyManagement>
@@ -62,6 +64,11 @@
             </dependency>
             <dependency>
                 <groupId>pe.com.cronos</groupId>
+                <artifactId>core-security</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>pe.com.cronos</groupId>
                 <artifactId>core-dependencies</artifactId>
                 <version>${revision}</version>
                 <type>pom</type>
@@ -69,30 +76,27 @@
 
             <!--spring-->
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>5.3.23</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot</artifactId>
-                <version>2.7.5</version>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-web</artifactId>
-                <version>5.3.23</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjweaver</artifactId>
-                <version>1.9.7</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <scope>test</scope>
+                <version>${spring.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.apache.tomcat.embed</groupId>
-                <artifactId>tomcat-embed-core</artifactId>
-                <version>9.0.6</version>
-            </dependency>
+
             <!--complements-->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>

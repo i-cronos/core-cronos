@@ -1,4 +1,4 @@
-package pe.com.cronos.core.crypto;
+package pe.com.cronos.core.crypto.hash;
 
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.http.HttpStatus;
@@ -9,14 +9,14 @@ import pe.com.cronos.core.exceptions.domain.Message;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public final class Digest {
+public final class CoreDigest {
     public static final String SHA256 = "SHA-256";
     public static final String SHA512 = "SHA-512";
 
-    private Digest() {
+    public CoreDigest() {
     }
 
-    public static String digest(String data, String algorithm) {
+    public String digest(String data, String algorithm) {
         try {
             MessageDigest md = MessageDigest.getInstance(algorithm);
             byte[] result = md.digest(data.getBytes());

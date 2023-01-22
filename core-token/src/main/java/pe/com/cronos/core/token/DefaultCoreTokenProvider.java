@@ -4,8 +4,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import pe.com.cronos.core.crypto.Digest;
+import pe.com.cronos.core.crypto.hash.CoreDigest;
 import pe.com.cronos.core.exceptions.CronosException;
 import pe.com.cronos.core.exceptions.domain.InfoFactory;
 import pe.com.cronos.core.exceptions.domain.Message;
@@ -18,15 +19,12 @@ import pe.com.cronos.core.token.properties.TokenSecretProperties;
 import java.time.Instant;
 import java.util.*;
 
-public class DefaultTokenProvider implements TokenProvider {
+@AllArgsConstructor
+public class DefaultCoreTokenProvider implements CoreTokenProvider {
 
     private final TokenGlobalProperties tokenGlobalProperties;
     private final TokenSecretProperties tokenSecretProperties;
-
-    public DefaultTokenProvider(TokenGlobalProperties tokenGlobalProperties, TokenSecretProperties tokenSecretProperties) {
-        this.tokenGlobalProperties = tokenGlobalProperties;
-        this.tokenSecretProperties = tokenSecretProperties;
-    }
+    private final CoreDigest coreDigest;
 
     @Override
     public TokenCreationResponse create(TokenCreationRequest tokenCreationRequest) {
@@ -38,14 +36,14 @@ public class DefaultTokenProvider implements TokenProvider {
                     .withSubject(tokenGlobalProperties.getSubject())
                     .withClaim(TokenConstant.TOKEN_LABEL_TYPE, tokenCreationRequest.getTokenType().name())
                     .withClaim(TokenConstant.TOKEN_LABEL_UID, tokenCreationRequest.getUid())
-                    .withClaim(TokenConstant.TOKEN_LABEL_ID, tokenCreationRequest.getId())
+                    .withClaim(TokenConstant.TOKEN_LABEL_UNAME, tokenCreationRequest.getCredentialId())
                     .withArrayClaim(TokenConstant.TOKEN_LABEL_AUTHORITIES, listToArray(tokenCreationRequest.getAuthorities()))
                     .withClaim(TokenConstant.TOKEN_LABEL_DATA, tokenCreationRequest.getData())
                     .withIssuedAt(now)
-                    .withExpiresAt(now.plusSeconds(tokenGlobalProperties.getTtl()))
+                    .withExpiresAt(now.plusSeconds(tokenCreationRequest.getTokenType().getTtl()))
                     .sign(algorithm);
 
-            String summary = Digest.digest(token, Digest.SHA256);
+            String summary = coreDigest.digest(token, CoreDigest.SHA256);
 
             return TokenCreationResponse.builder()
                     .tokenType(tokenCreationRequest.getTokenType())
@@ -71,28 +69,28 @@ public class DefaultTokenProvider implements TokenProvider {
 
             return TokenValidationResponse.builder()
                     .tokenType(TokenType.valueOf(jwt.getClaim(TokenConstant.TOKEN_LABEL_TYPE).asString()))
-                    .uid(jwt.getClaim(TokenConstant.TOKEN_LABEL_UID).asString())
-                    .id(jwt.getClaim(TokenConstant.TOKEN_LABEL_ID).asString())
+                    .id(jwt.getClaim(TokenConstant.TOKEN_LABEL_UID).asString())
+                    .credentialId(jwt.getClaim(TokenConstant.TOKEN_LABEL_UNAME).asString())
                     .authorities(arrayToList(jwt.getClaim(TokenConstant.TOKEN_LABEL_AUTHORITIES).asArray(String.class)))
                     .data(jwt.getClaim(TokenConstant.TOKEN_LABEL_DATA).asMap())
                     .build();
 
 
         } catch (Exception ex) {
-            throw new CronosException(InfoFactory.map(Message.CORE_TOKEN_VALIDATION, HttpStatus.INTERNAL_SERVER_ERROR, ex));
+            throw new CronosException(InfoFactory.map(Message.CORE_TOKEN_VALIDATION, HttpStatus.FORBIDDEN, ex));
         }
     }
 
     private String[] listToArray(List<String> authorities) {
         if (Objects.nonNull(authorities))
             return authorities.stream().toArray(String[]::new);
-        return null;
+        return new String[]{};
     }
 
     private List<String> arrayToList(String[] authorities) {
         if (Objects.nonNull(authorities)) {
             return Arrays.asList(authorities);
         }
-        return null;
+        return Collections.emptyList();
     }
 }

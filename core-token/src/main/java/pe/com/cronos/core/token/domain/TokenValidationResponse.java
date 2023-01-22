@@ -11,8 +11,8 @@ import java.util.Map;
 @Builder
 public class TokenValidationResponse {
     private TokenType tokenType;
-    private String uid;
     private String id;
+    private String credentialId;
     private List<String> authorities;
     private Map<String, Object> data;
 }
