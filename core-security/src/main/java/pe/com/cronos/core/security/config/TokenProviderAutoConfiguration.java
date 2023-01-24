@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 @Configuration
-public class AppCoreContextAutoConfiguration {
+public class TokenProviderAutoConfiguration {
 
     @Bean
     @ConfigurationProperties("app.global.security")
