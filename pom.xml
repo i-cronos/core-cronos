@@ -12,7 +12,6 @@
         <module>core-constant</module>
         <module>core-util</module>
         <module>core-crypto</module>
-        <module>core-token</module>
         <module>core-exception</module>
         <module>core-dependencies</module>
         <module>core-aspect</module>
@@ -50,11 +49,6 @@
             <dependency>
                 <groupId>pe.com.cronos</groupId>
                 <artifactId>core-util</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>pe.com.cronos</groupId>
-                <artifactId>core-token</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

@@ -7,11 +7,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import pe.com.cronos.core.security.domain.CoreSecurityProperties;
-import pe.com.cronos.core.security.filter.CoreTokenFilter;
-import pe.com.cronos.core.security.filter.CoreWardenFilter;
-import pe.com.cronos.core.security.util.ErrorResponseUtil;
-import pe.com.cronos.core.token.CoreTokenProvider;
+import pe.com.cronos.core.security.token.CoreTokenProvider;
+import pe.com.cronos.core.security.wild.domain.CoreSecurityProperties;
+import pe.com.cronos.core.security.wild.filter.CoreTokenFilter;
+import pe.com.cronos.core.security.wild.filter.CoreWardenFilter;
+import pe.com.cronos.core.security.wild.service.CoreContextService;
+import pe.com.cronos.core.security.wild.service.DefaultCoreContextService;
+import pe.com.cronos.core.security.wild.util.ErrorResponseUtil;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
@@ -30,5 +32,10 @@ public class AppCoreSecurityAutoConfiguration {
         http.addFilterBefore(new CoreWardenFilter(coreSecurityProperties, errorResponseUtil, objectMapper), BasicAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public CoreContextService coreContextService() {
+        return new DefaultCoreContextService();
     }
 }
