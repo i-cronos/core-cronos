@@ -5,11 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pe.com.cronos.core.exceptions.CronosException;
 import pe.com.cronos.core.exceptions.config.ErrorModel;
 import pe.com.cronos.core.exceptions.domain.Message;
 import pe.com.cronos.core.security.domain.CoreAuthenticatedUser;
+import pe.com.cronos.core.security.domain.CoreSecurityProperties;
 import pe.com.cronos.core.security.util.ErrorResponseUtil;
 import pe.com.cronos.core.token.CoreTokenProvider;
 import pe.com.cronos.core.token.domain.TokenValidationRequest;
@@ -20,21 +22,28 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class CoreTokenFilter extends OncePerRequestFilter {
     private static final String BEARER = "Bearer ";
+
+    private final CoreSecurityProperties coreSecurityProperties;
     private final CoreTokenProvider coreTokenProvider;
     private final ErrorResponseUtil errorResponseUtil;
     private final ObjectMapper objectMapper;
+    private final AntPathMatcher pathMatcher;
 
-    public CoreTokenFilter(CoreTokenProvider coreTokenProvider, ErrorResponseUtil errorResponseUtil, ObjectMapper objectMapper) {
+    public CoreTokenFilter(CoreSecurityProperties coreSecurityProperties,
+                           CoreTokenProvider coreTokenProvider,
+                           ErrorResponseUtil errorResponseUtil,
+                           ObjectMapper objectMapper) {
+        this.coreSecurityProperties = coreSecurityProperties;
         this.coreTokenProvider = coreTokenProvider;
         this.errorResponseUtil = errorResponseUtil;
         this.objectMapper = objectMapper;
+        this.pathMatcher = new AntPathMatcher();
     }
 
     @Override
@@ -81,5 +90,8 @@ public class CoreTokenFilter extends OncePerRequestFilter {
         return false;
     }
 
-
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return coreSecurityProperties.getExcludedPaths().stream().anyMatch(s -> pathMatcher.match(s, request.getServletPath()));
+    }
 }
