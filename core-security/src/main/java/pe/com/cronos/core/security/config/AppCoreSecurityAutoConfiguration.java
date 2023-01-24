@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import pe.com.cronos.core.security.domain.CoreSecurityProperties;
 import pe.com.cronos.core.security.filter.CoreTokenFilter;
 import pe.com.cronos.core.security.filter.CoreWardenFilter;
 import pe.com.cronos.core.security.util.ErrorResponseUtil;
@@ -17,7 +18,7 @@ import pe.com.cronos.core.token.CoreTokenProvider;
 public class AppCoreSecurityAutoConfiguration {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, CoreTokenProvider tokenProvider) throws Exception {
+    public SecurityFilterChain coreSecurityFilterChain(HttpSecurity http, CoreSecurityProperties coreSecurityProperties, CoreTokenProvider tokenProvider) throws Exception {
         http.csrf().disable();
 
         http.httpBasic().disable();
@@ -25,8 +26,8 @@ public class AppCoreSecurityAutoConfiguration {
         ErrorResponseUtil errorResponseUtil = new ErrorResponseUtil();
         ObjectMapper objectMapper = new ObjectMapper();
 
-        http.addFilterAt(new CoreTokenFilter(tokenProvider, errorResponseUtil, objectMapper), BasicAuthenticationFilter.class);
-        http.addFilterBefore(new CoreWardenFilter(errorResponseUtil, objectMapper), BasicAuthenticationFilter.class);
+        http.addFilterAt(new CoreTokenFilter(coreSecurityProperties, tokenProvider, errorResponseUtil, objectMapper), BasicAuthenticationFilter.class);
+        http.addFilterBefore(new CoreWardenFilter(coreSecurityProperties, errorResponseUtil, objectMapper), BasicAuthenticationFilter.class);
 
         return http.build();
     }
